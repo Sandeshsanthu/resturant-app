@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:5.7
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Sandesh!11071995
+      MYSQL_DATABASE: restaurantdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+    networks:
+      - mynetwork
+
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Sandesh!11071995
+      MONGO_INITDB_DATABASE: orderdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    networks:
+      - mynetwork
+
+  eureka-server:
+    image: sandeshsanthu/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - mynetwork
+
+
+  restaurant-listing-app:
+    image: sandeshsanthu/restaurant-listing-app:1
+    container_name: restaurant-listing-app
+    ports:
+      - "9091:9091"
+    restart: always
+    networks:
+      - mynetwork
+
+  food-catalogue-service:
+    image: sandeshsanthu/food-catalogu:latest
+    container_name: food-catalogue-service
+    ports:
+      - "9092:9092"
+    restart: always
+    networks:
+      - mynetwork
+
+  user-service:
+    image: sandeshsanthu/user-service:latest
+    container_name: user-service
+    ports:
+      - "9093:9093"
+    restart: always
+    networks:
+      - mynetwork
+
+  order-service:
+    image: sandeshsanthu/order-service:latest
+    container_name: order-service
+    ports:
+      - "9094:9094"
+    restart: always
+    networks:
+      - mynetwork
+
+  food-delivery-app-fe:
+    image: sandeshsanthu/food-delivery-app-fe:latest
+    container_name: food-delivery-app-fe
+    ports:
+      - "8080:80"
+    restart: always
+    networks:
+      - mynetwork
+
+
+
+
+# Add other services here if needed
+
+volumes:
+  mysql-data:
+  mongo-data:
+
+networks:
+  mynetwork:
+    driver: bridge
